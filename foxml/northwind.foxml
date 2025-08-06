@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<queryMap xmlns="http://schema.neodeex.net/fx/foxml/2023/04/">
+  <statements>
+    <statement id="get_all_products">
+      <text><![CDATA[
+        select * from products
+      ]]>
+      </text>
+    </statement>
+    <statement id="get_products_by_name">
+      <text>
+        select * from products $$WHERE()$$
+      </text>
+      <macros>
+        <macro name="WHERE">
+          if (env.Args.product_name != null) {
+            env.Args.product_name = '%' + env.Args.product_name + '%';
+            return "WHERE product_name like #product_name#";
+          }
+        </macro>
+      </macros>
+    </statement>
+  </statements>
+</queryMap>

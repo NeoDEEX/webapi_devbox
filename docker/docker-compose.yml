@@ -1,0 +1,48 @@
+#
+# NeoDEEX WebAPI Conatiner 를 사용하는 프로젝트를 위한 Docker Compose 파일
+#
+name: neodeex_webapi_dev
+
+services:
+  webapiapp:
+    # NeoDEEX Fox Biz/Data Service WebAPI 컨테이너 이미지
+    image: ksyu33/neodeex.webapi
+    # 컨테이너 이름 (원하는대로 설정 가능)
+    container_name: neodeex.webapi.dev
+
+    # 로컬 시간 표시를 위한 환경 변수 설정(Ubuntu 기준)
+    environment:
+      - TZ=Asia/Seoul
+    
+    ports:
+      - "5050:8080"
+
+    # develop:
+    #   watch:
+    #     # Foxml 디렉터리 변경 사항을 컨테이너에 동기화
+    #     - action: sync
+    #       path: ../foxml
+    #       target: /app/foxml
+    #       x-initialSync: true
+    #     # 비즈 모듈 디렉터리 변경 사항을 컨테이너에 동기화
+    #     - action: sync+restart
+    #       path: ../bizmodules
+    #       target: /app/bizmodules
+    #       x-initialSync: true
+    #     # neodeex config 디렉터리 변경 사항을 컨테이너에 동기화 (타이밍 상 권장하지 않음)
+    #     - action: sync+restart
+    #       path: ./config
+    #       target: /app/config
+    #       x-initialSync: true
+
+    volumes:
+      # fox biz service 모듈 디렉터리 mount
+      - ../bizmodules:/app/bizmodules:ro
+      # fox data service foxml 디렉터리 mount
+      - ../foxml:/app/foxml:ro
+      # neodeex config 디렉터리 mount
+      - ../config:/app/config:ro
+      # 원격 디버거를 위한 mount
+      # - C:\Users\ksyu3\vsdbg\vs2017u5:/remote_debugger:rw
+      # user-secrets 를 위한 mount
+      #- ${APPDATA}\Microsoft\UserSecrets:/home/app/.microsoft/usersecrets:ro

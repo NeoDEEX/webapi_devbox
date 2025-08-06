@@ -1,0 +1,1 @@
+docker exec -d -it neodeex.webapi.dev /remote_debugger/vsdbg --interpreter=vscode

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://neodeex.github.io/doc/neodeex.config.schema.json",
+  "$baseConfig": "neodeex.base.config.json",
+  "appSettings": {
+    "userSecretsId": "c18228dc-8c4a-4f10-9752-1701cce0ce4e"
+  },
+  "database": {
+    "connectionStrings": {
+      "DefaultDB": {
+        "connectionString": "connectionStrings:PostgreSQL",
+        "userSecrets": true
+      }
+    }
+  }
+}
