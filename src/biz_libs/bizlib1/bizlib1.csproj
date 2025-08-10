@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <NoWarn>CA1822</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NeoDEEX.Data.NpgsqlClient" Version="5.0.0-alpha.3" />
+    <PackageReference Include="NeoDEEX.ServiceModel.Services" Version="5.0.0-alpha.3" />
+    <PackageReference Include="NeoDEEX.Transactions" Version="5.0.0-alpha.3" />
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy /d /y $(TargetDir)$(TargetName).* $(ProjectDir)..\..\..\bizmodules\" />
+  </Target>
+
+</Project>

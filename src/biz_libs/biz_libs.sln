@@ -1,0 +1,41 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.36105.23
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bizlib1", "bizlib1\bizlib1.csproj", "{94C13364-03BD-4AD8-BFE3-939E09EA2785}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "foxml", "foxml", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\foxml\example.foxml = ..\..\foxml\example.foxml
+		..\..\foxml\northwind.foxml = ..\..\foxml\northwind.foxml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker", "docker", "{08FC8946-6E72-4886-966B-FFC0D6369E99}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\docker\docker-compose.yml = ..\..\docker\docker-compose.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "config", "config", "{F4987E08-024B-4B2F-ABAF-FB0C6A87929D}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\config\neodeex.config.json = ..\..\config\neodeex.config.json
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{94C13364-03BD-4AD8-BFE3-939E09EA2785}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94C13364-03BD-4AD8-BFE3-939E09EA2785}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94C13364-03BD-4AD8-BFE3-939E09EA2785}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94C13364-03BD-4AD8-BFE3-939E09EA2785}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B65040D2-CBB9-44B8-A3D8-A3C4BCFEA3F3}
+	EndGlobalSection
+EndGlobal
