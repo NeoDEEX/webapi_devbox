@@ -1,0 +1,98 @@
+#
+# Web API Devbox HTTP Requests
+#
+@webapi_app_HostAddress = http://localhost:5050
+
+POST {{webapi_app_HostAddress}}/api/dataservice/executedataset
+Accept: application/json
+
+{
+  "queryId": "northwind:get_all_products"
+}
+###
+
+POST {{webapi_app_HostAddress}}/api/dataservice/executedataset
+Accept: application/json
+
+{
+  "queryId": "northwind:get_products_by_name",
+  "parameters": {
+    "product_name": "Che%"
+  }
+}
+###
+
+POST {{webapi_app_HostAddress}}/api/bizservice/execute
+Accept: application/json
+
+{
+  "classId": "Test",
+  "methodId": "Echo",
+  "parameters": {
+    "message": "Hello, World!"
+  }
+}
+###
+
+POST {{webapi_app_HostAddress}}/api/bizservice/execute
+Accept: application/json
+
+{
+  "classId": "Test",
+  "methodId": "DumpParameters",
+  "parameters": {
+    "param1": "Parameter-1",
+    "param2": 222,
+    "param3": 33.333
+  }
+}
+###
+
+POST {{webapi_app_HostAddress}}/api/bizservice/execute
+Accept: application/json
+
+{
+  "classId": "BizLogic",
+  "methodId": "GetProducts",
+  "parameters": {
+  }
+}
+###
+
+POST {{webapi_app_HostAddress}}/api/bizservice/execute
+Accept: application/json
+
+{
+  "classId": "BizLogic",
+  "methodId": "GetProducts",
+  "parameters": {
+    "product_name": "Che"
+  }
+}
+###
+
+POST {{webapi_app_HostAddress}}/api/bizservice/execute
+Accept: application/json
+
+{
+  "classId": "BizLogic",
+  "methodId": "InsertProduct",
+  "parameters": {
+    "product_name": "테스트 제품",
+    "category_id": 1,
+    "unit_price": 123.45
+  }
+}
+###
+
+POST {{webapi_app_HostAddress}}/api/bizservice/execute
+Accept: application/json
+
+{
+  "classId": "BizLogic",
+  "methodId": "DeleteProduct",
+  "parameters": {
+    "product_id": 78
+  }
+}
+###
