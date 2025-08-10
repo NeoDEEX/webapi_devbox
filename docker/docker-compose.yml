@@ -42,7 +42,5 @@ services:
       - ../foxml:/app/foxml:ro
       # neodeex config 디렉터리 mount
       - ../config:/app/config:ro
-      # 원격 디버거를 위한 mount
-      # - C:\Users\ksyu3\vsdbg\vs2017u5:/remote_debugger:rw
       # user-secrets 를 위한 mount
-      #- ${APPDATA}\Microsoft\UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}\Microsoft\UserSecrets:/home/app/.microsoft/usersecrets:ro
