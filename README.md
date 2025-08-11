@@ -49,6 +49,8 @@
     http://localhost:5050/api/dataservice/test
     ```
 
+    ![Fox Data Service Tester Page](images/dataservice_tester.png)
+
     로그는 콘솔에 출력되며 `-d` 옵션(detach)으로 컨테이너를 구동한 경우 다음 `docker logs` 명령을 사용할 수도 있습니다. 로그는 Visual Studio 의 `Containers` 창의 Logs 탭을 살펴보거나,
 
     ![Visual Studio Containers Window](images/vs_containers_window.png)
@@ -62,6 +64,8 @@
     ```url
     http://localhost:5050/api/bizservice/test
     ```
+
+    ![Fox Biz Service Tester Page](images/bizservice_tester.png)
 
 7. `.foxml` 파일 혹은 비즈 로직 모듈 `.dll` 파일이 변경된 경우 컨테이너를 재시작합니다.
 
