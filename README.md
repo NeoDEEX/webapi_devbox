@@ -23,7 +23,7 @@
     }
     ```
 
-    > **NOTE**
+    > **NOTE:**
     > 이 예제에 포함된 [`neodeex.config.json`](/config/neodeex.config.json) 파일은 [user-secrets](https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-8.0&tabs=windows) 를 사용하여 연결 문자열을 읽어들입니다. 따라서 연결 문자열 값이 user-secrets 설정의 경로이며, `userSecrets` 속성이 `true` 로 지정되어 있습니다. 또한, `docker-compose.yml` 파일에서 로컬 호스트의 user-secrets 파일을 사용할 수 있도록 `mount` 설정도 추가되어 있습니다.
 
 2. Foxml 쿼리 설정
@@ -34,7 +34,7 @@
 
     비즈 로직 모듈 `.dll` (들)을 작성하고 빌드된 `.dll` 을 [`/bizmodules` 디렉터리](/bizmodules/)에 복사합니다.
 
-    > **NOTE**
+    > **NOTE:**
     > 이 예제에 포함된 bizlib1 프로젝트는 작성된 비즈 모듈 `dll` 을 `bizmodules` 디렉터리에 복사하는 빌드 이벤트를 포함하고 있습니다. 따라서 빌드가 수행되면 비즈 모듈이 자동으로 복사됩니다.
 
 4. Docker Compose 를 구동하여 컨테이너를 구동합니다.
@@ -49,7 +49,7 @@
     http://localhost:5050/api/dataservice/test
     ```
 
-    로그는 콘솔에 로그로 출력되며 -d 옵션으로 컨테이너를 구동한 경우 다음 docker logs 명령을 사용할 수도 있습니다. 로그는 Visual Studio 의 Containers 창이나
+    로그는 콘솔에 출력되며 `-d` 옵션(detach)으로 컨테이너를 구동한 경우 다음 `docker logs` 명령을 사용할 수도 있습니다. 로그는 Visual Studio 의 `Containers` 창의 Logs 탭을 살펴보거나,
 
     ![Visual Studio Containers Window](images/vs_containers_window.png)
 
@@ -73,12 +73,12 @@
 
 비즈 모듈 `.dll` 이 변경되면 컨테이너를 자동으로 재시작 하도록 하거나, `.foxml` 파일의 변경을 감지하여 다시 로드하도록 설정이 가능합니다. 이 기능은 [Docker Compose 의 Watch 기능](https://docs.docker.com/compose/how-tos/file-watch/)을 사용해야 합니다.
 
-> **NOTE**
-> Docker 를 사용하지 않고 Windows 환경에서 Web API 를 작성하는 경우, 비즈 로직 `dll` 파일이나 `.foxml` 파일 변경 시 다시 로드하는 기능은 NeoDEEX 수준에서 제공됩니다. 하지만 Docker 환경의 제약 사항으로 인해 Compose Watch 기능에 의존합니다.
+> **NOTE:**
+> Windows 환경에서 Web API 를 작성 및 구동하는 경우, 비즈 로직 `dll` 파일이나 `.foxml` 파일 변경 시 다시 로드하는 기능은 NeoDEEX 수준에서 제공될 수 있습니다. 하지만 Docker 환경의 파일 편집/복사 등의 제약으로 인해 Compose Watch 기능에 의존합니다.
 
-다음은 Compose Watch 기능을 활용하여 비즈 모듈과 `.foxml` 파일 변경을 확인하는 `docker-compose.yml` 파일의 부분을 보여줍니다.
+다음은 Compose Watch 기능을 활용하여 비즈 모듈 `dll` 과 `.foxml` 파일 변경을 확인하는 `docker-compose.yml` 파일의 부분을 보여줍니다. `bizmodule` 디렉터리에 변경 사항이 발생하면 로컬 시스템의 디렉터리를 컨테이너 반영한 후 앱을 다시 시작(`sync+restart`)하고, `foxml` 디렉터리에 변경 사항이 발생하면 변경 사항을 컨테이너에 반영(`sync`)합니다. 컨테이너에 반영된 `.foxml` 변경 사항은 앱 재시작 없이 NeoDEEX 가 자동으로 다시 읽어들입니다.
 
-> **CAUTION**
+> **WARNING:**
 > `foxml` 과 `bizmodules` 디렉터리에 대한 `mount` 설정을 제거하고 `watch` 설정을 추가하십시요.
 
 ```yml
@@ -96,12 +96,12 @@
           x-initialSync: true
 ```
 
-> **WARNING**
+> **NOTE:**
 > Watch 기능이 정상적으로 작동하기 위해서는 `.dll` 파일 혹은 `.foxml` 파일의 수정 날짜가 `neodeex.webapi` 이미지의 생성 날짜보다 더 최신이어야 합니다. Watch 기능이 정상적으로 작동하지 않는다면 `bizmodules` 디렉터리와 `foxml` 디렉터리의 파일들의 수정 날짜를 확인하십시요. 그리고 필요다하면 이들 파일들의 날짜를 최신으로 바꾸는 PowerShell 스크립트(`touch-all.ps1`)를 사용하십시요.
 
-`neodeex.config.json` 파일 역시 Watch 에 의해 변경 시 컨테이너를 다시 시작할 수 있지만 도커가 이 파일의 변경을 인식하는 것과 재시작하는 것의 타이밍 상의 문제로 잘 적용이 안될 수 있습니다. 따라서 구성 설정 파일은 Compose Watch 기능에 의존지 않고 명시적으로 컨테이너틀 다시 시작(`docker compose restart`)하는 것이 좋습니다.
+`neodeex.config.json` 파일 역시 Watch 에 의해 변경 시 컨테이너를 다시 시작할 수 있지만 Docker가 이 파일의 변경을 인식하는 것과 재시작하는 것의 타이밍 상의 문제로 적용이 안되는 경우가 존재합니다. 따라서 구성 설정 파일이 변경된 경우, Compose Watch 기능에 의존지 않고 명시적으로 컨테이너틀 다시 시작(`docker compose restart`)하는 것이 좋습니다.
 
-Compose Watch 기능을 설정한 경우 `--watch` 옵션을 사용하여 Compose 를 수행하거나
+Compose Watch 기능을 설정한 경우 `--watch` 옵션을 사용하여 Compose 를 수행하거나,
 
 ```cmd
 docker compose up --watch
@@ -113,7 +113,7 @@ docker compose up --watch
 docker compose watch
 ```
 
-> **NOTE**
+> **NOTE:**
 > Compose Watch 를 사용하면(`--watch` 옵션 혹은 `watch` 명령) 명령을 수행한 터미널은 Compose Watch 모니터링 내용을 출력하며 제어를 반환하지 않습니다. 따라서 Compose Watch 를 위한 별도의 터미널을 여는 것이 편리 합니다.
 
 ## Configuration Customizing
@@ -143,7 +143,7 @@ Fox Biz/Data Service Web API 에 대한 구성 설정은 `/app/config/neodeex.co
 
 위와 같은 설정은 `neodeex.base.config.json` 파일의 설정을 오버라이드(혹은 추가) 하게 됩니다.
 
-> **NOTE**
+> **NOTE:**
 > 만약 `$baseConfig` 속성을 사용하지 않는다면 `neodeex.base.config.json` 파일의 내용은 전혀 참조되지 않고 `neodeex.config.json` 파일의 내용만이 구성 설정으로 사용됩니다.
 
 ## Debugging Biz Module
@@ -170,9 +170,44 @@ Visual Studio 를 이용하면 컨테이너에서 작동 중인 비즈 모듈에
 
 6. 디버그 어댑터가 구동된다는 메시지 표시 이후 디버거가 컨테이너에 연결되고 디버깅이 가능해 집니다.
 
-    > **NOTE**
+    > **NOTE:**
     > 최초에 컨테이너에 디버거가 연결될 때까지 상당한 시간이 소요될 수 있습니다. 이는 Visual Studio 가 컨테이너에 리눅스용 원격 디버거(vsdbg)를 다운로드하고 설치하기 때문입니다. 수백 MB 가 넘는 크기이므로 인터넷 다운로드 상황에 따라서 수십 초 혹은 수 분 이상이 소요될 수 있습니다. 최초로 컨테이너에 원격 디버거가 설치된 이후에는 Attach Process 과정이 빠르게 수행됩니다.
 
 ## Other Consideration
+
+`neodeex.webapi` 도커 이미지를 이용하여 비즈/데이터 서비스를 개발할 때 추가적으로 고려해야 할 사항들은 다음과 같습니다.
+
+### CORS(Cross-Origin Resource Sharing)
+
+`neodeex.webapi` 이미지에 구성된 ASP.NET Core 웹앱은 개발 편의를 위해 모든 원본(origin)에 대해 모든 헤더, 모든 HTTP VERB 를 허용하도록 구성되어 있습니다. 원본 설정은 구성 설정의 `appSettings:corsOrign` 설정값을 사용합니다. 다음은 `neodeex.webapi` 이미지에 설정된 기본 설정 값을 보여 줍니다.
+
+```json
+{
+  "appSettings": {
+    "corsOrigin": [ "*" ]
+  }
+}
+```
+
+이 설정을 `neodeex.config.json` 파일에 추가 함으로써 기본 CORS 설정의 원본(들)을 변경할 수 있습니다.
+
+### 인증/권한
+
+`neodeex.webapi` 이미지는 기본적으로 HTTP 헤더(`FoxRest-Authenticate`)에 기반한 NeoDEEX 기본 인증(authentication)이 적용되어 있습니다. 즉 인증된 호출을 수행하면 비즈 로직 혹은 Foxml 쿼리에서 사용자에 대한 정보(`FoxUserInfoContext`)를 확인할 수 있습니다. 하지만 인증되지 않은 호출을 거부하는 권한 확인(authorization)은 기본적으로 활성화 되어 있지 않습니다.
+
+인증/권한까지 적용된 테스트가 필요하다면 Web API 앱을 직접 작성해야 합니다. 앱을 작성하는 구체적인 방법에 대한 기초 지식은 [NeoDEEX Web API 시작하기 문서](https://neodeex.github.io/doc/webapi/getting_started/)를 참고하십시요.
+
+## 📌Summary
+
+이 예제는 NeoDEEX 기반 Web API 개발을 빠르게 시작하고 테스트할 수 있도록 `neodeex.webapi` 도커 이미지를 사용하는 방법을 보여줍니다. 이 예제에서처럼 개발자는 도커 환경에서 비즈 로직 모듈과 Foxml 쿼리를 빠르고 쉽게 개발 및 테스트 할 수 있습니다.
+
+`neodeex.webapi` 도커 이미지는 기본적으로 작동에 필요한 설정이 되어 있지만 다음과 같은 다양한 커스터마이징 이 가능합니다.
+
+- **데이터베이스 연결**: `neodeex.config.json` 파일을 통해 설정
+- **Foxml 쿼리 작성**: `/foxml` 디렉터리에 `.foxml` 파일을 작성하여 데이터 서비스 구현
+- **비즈니스 로직 모듈**: `.dll` 파일을 `/bizmodules`에 배치하여 Biz Service 기능 확장
+- **자동 재시작 기능**: Compose Watch 기능을 통해 `.foxml` 및 `.dll` 변경 시 자동 재시작 가능
+- **디버깅 지원**: Visual Studio에서 Docker 컨테이너 내 `.dll` 모듈 디버깅 가능
+- **구성 설정 오버라이드**: `neodeex.config.json`에서 `$baseConfig`를 통해 기본 설정을 재정의 가능
 
 ---
