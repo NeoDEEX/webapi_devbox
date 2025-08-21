@@ -42,5 +42,7 @@ services:
       - ../foxml:/app/foxml:ro
       # neodeex config 디렉터리 mount
       - ../config:/app/config:ro
-      # user-secrets 를 위한 mount
+      # user-secrets 를 위한 mount (Windows 환경)
       - ${APPDATA}\Microsoft\UserSecrets:/home/app/.microsoft/usersecrets:ro
+      # user-secrets 를 위한 mount (WSL 환경)
+      #- ${HOME}/.microsoft/usersecrets:/home/app/.microsoft/usersecrets:ro

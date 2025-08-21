@@ -73,12 +73,14 @@
     docker compose restart
     ```
 
-## Auto-Reload
+## Compose Watch for Auto-reloading
 
-비즈 모듈 `.dll` 이 변경되면 컨테이너를 자동으로 재시작 하도록 하거나, `.foxml` 파일의 변경을 감지하여 다시 로드하도록 설정이 가능합니다. 이 기능은 [Docker Compose 의 Watch 기능](https://docs.docker.com/compose/how-tos/file-watch/)을 사용해야 합니다.
+NeoDEEX 는 구성 설정 변경 시 구성 설정 파일(`config` 디렉터리의 `neodeex.config.json` 파일)을 다시 읽어 들입니다. 또한 Fox Data Service 는 `.foxml` 파일의 변경도 감지하고 파일을 다시 읽어 들입니다. 이러한 기능은 Windows 나 WSL 환경에서 Web API 를 구성하고 구동하는 경우 잘 적용됩니다.
 
 > **NOTE:**
-> Windows 환경에서 Web API 를 작성 및 구동하는 경우, 비즈 로직 `dll` 파일이나 `.foxml` 파일 변경 시 다시 로드하는 기능은 NeoDEEX 수준에서 제공될 수 있습니다. 하지만 Docker 환경의 파일 편집/복사 등의 제약으로 인해 Compose Watch 기능에 의존합니다.
+> Fox Biz Service 역시 비즈 모듈 `.dll` 을 다시 읽어 들이는 기능을 가지고 있습니다만 제약 사항이 존재합니다. 다시 로드된 비즈 모듈 내에 Fox Transactions 기능을 사용하는 클래스들(`FoxBizBase`, `FoxDacBase` 등)은 호출 시 오류가 발생합니다. 이러한 이유에서 `neodeex.webapi` 이미지는 기본적으로 Fox Biz Service 가 비즈 모듈 `.dll`을 다시 로드 하는 기능이 활성화되어 있지 않습니다.
+
+하지만 Docker 환경에서 `neodeex.webapi` 이미지를 사용하는 Linux 기반 컨테이너는 Windows 호스트에서 바인딩 마운트된 디렉터리의 변경 사항을 제대로 감지하지 못합니다. 이러한 경우에는 [Docker Compose 의 Watch 기능](https://docs.docker.com/compose/how-tos/file-watch/)을 사용할 수 있습니다. 이 기능을 통해 비즈 모듈 `.dll` 이 변경되면 컨테이너를 자동으로 재시작 하도록 하거나, `.foxml` 파일의 변경을 감지하여 다시 로드하도록 설정이 가능합니다.
 
 다음은 Compose Watch 기능을 활용하여 비즈 모듈 `dll` 과 `.foxml` 파일 변경을 확인하는 `docker-compose.yml` 파일의 부분을 보여줍니다. `bizmodule` 디렉터리에 변경 사항이 발생하면 로컬 시스템의 디렉터리를 컨테이너 반영한 후 앱을 다시 시작(`sync+restart`)하고, `foxml` 디렉터리에 변경 사항이 발생하면 변경 사항을 컨테이너에 반영(`sync`)합니다. 컨테이너에 반영된 `.foxml` 변경 사항은 앱 재시작 없이 NeoDEEX 가 자동으로 다시 읽어들입니다.
 
@@ -101,7 +103,7 @@
 ```
 
 > **NOTE:**
-> Watch 기능이 정상적으로 작동하기 위해서는 `.dll` 파일 혹은 `.foxml` 파일의 수정 날짜가 `neodeex.webapi` 이미지의 생성 날짜보다 더 최신이어야 합니다. Watch 기능이 정상적으로 작동하지 않는다면 `bizmodules` 디렉터리와 `foxml` 디렉터리의 파일들의 수정 날짜를 확인하십시요. 그리고 필요다하면 이들 파일들의 날짜를 최신으로 바꾸는 PowerShell 스크립트(`touch-all.ps1`)를 사용하십시요.
+> Watch 기능이 정상적으로 작동하기 위해서는 `.dll` 파일 혹은 `.foxml` 파일의 수정 날짜가 `neodeex.webapi` 이미지의 생성 날짜보다 더 최신이어야 합니다. Watch 기능이 정상적으로 작동하지 않는다면 `bizmodules` 디렉터리와 `foxml` 디렉터리의 파일들의 수정 날짜를 확인하십시요. 그리고 필요다하면 이들 파일들의 날짜를 최신으로 바꾸기 위해 `touch` 명령을 사용하거나 PowerShell 스크립트(`touch-all.ps1`)를 사용하십시요.
 
 `neodeex.config.json` 파일 역시 Watch 에 의해 변경 시 컨테이너를 다시 시작할 수 있지만 Docker가 이 파일의 변경을 인식하는 것과 재시작하는 것의 타이밍 상의 문제로 적용이 안되는 경우가 존재합니다. 따라서 구성 설정 파일이 변경된 경우, Compose Watch 기능에 의존지 않고 명시적으로 컨테이너틀 다시 시작(`docker compose restart`)하는 것이 좋습니다.
 
