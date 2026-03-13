@@ -8,13 +8,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NeoDEEX.Data.NpgsqlClient" Version="5.0.0-alpha.3" />
-    <PackageReference Include="NeoDEEX.ServiceModel.Services" Version="5.0.0-alpha.3" />
-    <PackageReference Include="NeoDEEX.Transactions" Version="5.0.0-alpha.3" />
+    <PackageReference Include="NeoDEEX.Data.NpgsqlClient" Version="5.0.0-beta.1" />
+    <PackageReference Include="NeoDEEX.ServiceModel.Services" Version="5.0.0-beta.1" />
+    <PackageReference Include="NeoDEEX.Transactions" Version="5.0.0-beta.1" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="xcopy /d /y $(TargetDir)$(TargetName).* $(ProjectDir)..\..\..\bizmodules\" />
+    <!-- for Linux systems -->
+    <!-- <Exec Command="cp -uf $(TargetDir)$(TargetName).* $(ProjectDir)../../../bizmodules/" /> -->
   </Target>
 
 </Project>
